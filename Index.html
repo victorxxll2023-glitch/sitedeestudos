@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADS Study Hub</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Ícones e fonte tipográfica -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+        <span class="logo-text">ADS Hub</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" title="Fechar menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <nav class="nav-menu">
+      <button class="nav-item active" data-page="home">
+        <i class="fa-solid fa-house"></i>
+        <span>Início</span>
+      </button>
+      <button class="nav-item" data-page="subjects">
+        <i class="fa-solid fa-book"></i>
+        <span>Matérias</span>
+      </button>
+      <button class="nav-item" data-page="tasks">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Tarefas</span>
+      </button>
+      <button class="nav-item" data-page="notes">
+        <i class="fa-solid fa-note-sticky"></i>
+        <span>Anotações</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <!-- Botão de tema claro/escuro -->
+      <button class="theme-toggle" id="themeToggle" title="Alternar tema">
+        <i class="fa-solid fa-moon" id="themeIcon"></i>
+        <span id="themeLabel">Tema Escuro</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-actions">
+        <!-- Barra de pesquisa global -->
+        <div class="search-wrapper">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="globalSearch" placeholder="Pesquisar tarefas..." />
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== PÁGINA: HOME ===== -->
+    <section class="page active" id="page-home">
+      <div class="page-header">
+        <h1>Bem-vindo de volta! <span class="wave">👋</span></h1>
+        <p class="subtitle">Análise e Desenvolvimento de Sistemas — acompanhe seu progresso.</p>
+      </div>
+
+      <!-- Cards de resumo -->
+      <div class="stats-grid">
+        <div class="stat-card card-blue">
+          <div class="stat-icon"><i class="fa-solid fa-book-open"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statSubjects">0</span>
+            <span class="stat-label">Matérias</span>
+          </div>
+        </div>
+        <div class="stat-card card-green">
+          <div class="stat-icon"><i class="fa-solid fa-list-check"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statTasks">0</span>
+            <span class="stat-label">Tarefas</span>
+          </div>
+        </div>
+        <div class="stat-card card-orange">
+          <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statDone">0</span>
+            <span class="stat-label">Concluídas</span>
+          </div>
+        </div>
+        <div class="stat-card card-purple">
+          <div class="stat-icon"><i class="fa-solid fa-note-sticky"></i></div>
+          <div class="stat-info">
+            <span class="stat-value" id="statNotes">0</span>
+            <span class="stat-label">Anotações</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de progresso geral -->
+      <div class="progress-section card">
+        <div class="progress-header">
+          <span class="section-title"><i class="fa-solid fa-chart-line"></i> Progresso Geral</span>
+          <span class="progress-pct" id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+        <p class="progress-hint" id="progressHint">Nenhuma tarefa cadastrada ainda.</p>
+      </div>
+
+      <!-- Matérias em destaque -->
+      <div class="section-title-row">
+        <span class="section-title"><i class="fa-solid fa-book"></i> Matérias Cadastradas</span>
+        <button class="btn-link" data-page="subjects">Ver todas</button>
+      </div>
+      <div class="subjects-preview" id="subjectsPreview">
+        <div class="empty-state-small">Nenhuma matéria cadastrada.</div>
+      </div>
+
+      <!-- Tarefas pendentes recentes -->
+      <div class="section-title-row" style="margin-top:2rem;">
+        <span class="section-title"><i class="fa-solid fa-clock"></i> Tarefas Pendentes</span>
+        <button class="btn-link" data-page="tasks">Ver todas</button>
+      </div>
+      <div class="tasks-preview" id="tasksPreview">
+        <div class="empty-state-small">Nenhuma tarefa pendente.</div>
+      </div>
+    </section>
+
+    <!-- ===== PÁGINA: MATÉRIAS ===== -->
+    <section class="page" id="page-subjects">
+      <div class="page-header">
+        <h1><i class="fa-solid fa-book"></i> Matérias</h1>
+        <p class="subtitle">Organize suas disciplinas do curso.</p>
+      </div>
+
+      <!-- Formulário de cadastro -->
+      <div class="card form-card">
+        <h2 class="card-title">Cadastrar Matéria</h2>
+        <div class="form-row">
+          <div class="input-group">
+            <label>Nome da Matéria *</label>
+            <input type="text" id="subjectName" placeholder="Ex: Banco de Dados" maxlength="60" />
+          </div>
+          <div class="input-group">
+            <label>Cor</label>
+            <div class="color-picker-row" id="colorPicker">
+              <button class="color-btn active" data-color="#4f8ef7" style="background:#4f8ef7;"></button>
+              <button class="color-btn" data-color="#1bd96a" style="background:#1bd96a;"></button>
+              <button class="color-btn" data-color="#f7a94f" style="background:#f7a94f;"></button>
+              <button class="color-btn" data-color="#e06af7" style="background:#e06af7;"></button>
+              <button class="color-btn" data-color="#f74f4f" style="background:#f74f4f;"></button>
+              <button class="color-btn" data-color="#4ff7e8" style="background:#4ff7e8;"></button>
+            </div>
+          </div>
+          <div class="input-group input-group-icon">
+            <label>Ícone</label>
+            <select id="subjectIcon">
+              <option value="fa-book">📚 Livro</option>
+              <option value="fa-database">🗄️ Banco de Dados</option>
+              <option value="fa-code">💻 Programação</option>
+              <option value="fa-brain">🧠 Lógica</option>
+              <option value="fa-network-wired">🌐 Redes</option>
+              <option value="fa-calculator">🔢 Matemática</option>
+              <option value="fa-shield-halved">🔒 Segurança</option>
+              <option value="fa-mobile-screen">📱 Mobile</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group full-width">
+            <label>Descrição (opcional)</label>
+            <input type="text" id="subjectDesc" placeholder="Ex: Fundamentos de SQL e NoSQL" maxlength="120" />
+          </div>
+        </div>
+        <button class="btn-primary" id="addSubjectBtn">
+          <i class="fa-solid fa-plus"></i> Adicionar Matéria
+        </button>
+      </div>
+
+      <!-- Lista de matérias -->
+      <div class="subjects-grid" id="subjectsList">
+        <!-- Preenchido via JS -->
+      </div>
+      <div class="empty-state" id="subjectsEmpty" style="display:none;">
+        <i class="fa-solid fa-book-open"></i>
+        <p>Nenhuma matéria cadastrada ainda.<br>Use o formulário acima para começar!</p>
+      </div>
+    </section>
+
+    <!-- ===== PÁGINA: TAREFAS ===== -->
+    <section class="page" id="page-tasks">
+      <div class="page-header">
+        <h1><i class="fa-solid fa-list-check"></i> Tarefas</h1>
+        <p class="subtitle">Gerencie seus estudos e acompanhe o progresso.</p>
+      </div>
+
+      <!-- Progresso -->
+      <div class="progress-section card">
+        <div class="progress-header">
+          <span class="section-title"><i class="fa-solid fa-chart-pie"></i> Progresso das Tarefas</span>
+          <span class="progress-pct" id="taskProgressPct">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="taskProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Formulário de nova tarefa -->
+      <div class="card form-card">
+        <h2 class="card-title">Nova Tarefa</h2>
+        <div class="form-row">
+          <div class="input-group" style="flex:2">
+            <label>Descrição *</label>
+            <input type="text" id="taskDesc" placeholder="Ex: Estudar JOINs no SQL" maxlength="120" />
+          </div>
+          <div class="input-group">
+            <label>Matéria</label>
+            <select id="taskSubject">
+              <option value="">Sem matéria</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Prioridade</label>
+            <select id="taskPriority">
+              <option value="baixa">🟢 Baixa</option>
+              <option value="media" selected>🟡 Média</option>
+              <option value="alta">🔴 Alta</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" id="addTaskBtn">
+          <i class="fa-solid fa-plus"></i> Adicionar Tarefa
+        </button>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all">Todas</button>
+          <button class="filter-tab" data-filter="pending">Pendentes</button>
+          <button class="filter-tab" data-filter="done">Concluídas</button>
+        </div>
+        <div class="filter-subject">
+          <select id="filterSubject">
+            <option value="">Todas as matérias</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Lista de tarefas -->
+      <div class="tasks-list" id="tasksList">
+        <!-- Preenchido via JS -->
+      </div>
+      <div class="empty-state" id="tasksEmpty" style="display:none;">
+        <i class="fa-solid fa-clipboard-list"></i>
+        <p>Nenhuma tarefa aqui.<br>Adicione uma acima para começar!</p>
+      </div>
+    </section>
+
+    <!-- ===== PÁGINA: ANOTAÇÕES ===== -->
+    <section class="page" id="page-notes">
+      <div class="page-header">
+        <h1><i class="fa-solid fa-note-sticky"></i> Anotações</h1>
+        <p class="subtitle">Seu bloco de notas para estudos.</p>
+      </div>
+
+      <!-- Botão nova nota -->
+      <div class="notes-toolbar">
+        <button class="btn-primary" id="addNoteBtn">
+          <i class="fa-solid fa-plus"></i> Nova Anotação
+        </button>
+        <div class="search-wrapper">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="noteSearch" placeholder="Buscar anotações..." />
+        </div>
+      </div>
+
+      <!-- Grade de notas -->
+      <div class="notes-grid" id="notesList">
+        <!-- Preenchido via JS -->
+      </div>
+      <div class="empty-state" id="notesEmpty" style="display:none;">
+        <i class="fa-solid fa-note-sticky"></i>
+        <p>Nenhuma anotação ainda.<br>Clique em "Nova Anotação" para criar!</p>
+      </div>
+    </section>
+
+  </main><!-- fim main-content -->
+
+  <!-- ========== MODAL DE NOTA ========== -->
+  <div class="modal-overlay" id="noteModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <input type="text" id="noteTitle" placeholder="Título da anotação..." class="note-title-input" maxlength="80" />
+        <button class="modal-close" id="closeNoteModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-subheader">
+        <select id="noteSubject" class="note-subject-select">
+          <option value="">Sem matéria</option>
+        </select>
+        <span class="note-date" id="noteDate"></span>
+      </div>
+      <textarea id="noteContent" placeholder="Escreva suas anotações aqui..." class="note-textarea"></textarea>
+      <div class="modal-footer">
+        <button class="btn-danger" id="deleteNoteBtn" style="display:none;">
+          <i class="fa-solid fa-trash"></i> Excluir
+        </button>
+        <button class="btn-primary" id="saveNoteBtn">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL DE CONFIRMAÇÃO ========== -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box modal-confirm">
+      <div class="confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h3 id="confirmTitle">Confirmar ação</h3>
+      <p id="confirmMessage">Tem certeza?</p>
+      <div class="confirm-actions">
+        <button class="btn-secondary" id="confirmCancel">Cancelar</button>
+        <button class="btn-danger" id="confirmOk">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de notificação -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
